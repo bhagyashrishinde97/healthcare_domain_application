@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: patient-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: healthinsurance
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - patient-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  patient-service:
+    build: .
+    container_name: patient-service
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/healthinsurance
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_DB_PASSWORD}
+    networks:
+      - patient-network
+
+volumes:
+  postgres_data:
+
+networks:
+  patient-network:
+    driver: bridge

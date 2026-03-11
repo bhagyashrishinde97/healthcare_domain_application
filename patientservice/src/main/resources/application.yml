@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: patientservice
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/healthinsurance
+    username: postgres
+    password: ${POSTGRES_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8081
+  keycloak:
+  #  realm: master
+  #  tenant-realm: tenant-group
+  #  base-url: http://localhost:3333
+  #  auth-url: ${KEYCLOCK_BASE_URL}/
+  #  client-id: user-service
+  #  client-secret: ${KEYCLOCK_CLIENT_SECRETE}

@@ -1,0 +1,22 @@
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#
+#keycloak:
+#  realm: master
+#  tenant-realm: tenant-group
+#  base-url: http://localhost:3333
+#  auth-url: ${keycloak.base-url}/
+#  client-id: user-service
+#  client-secret: W2B6n7iOzWnIWfKqX8niJJpexUDzapFY
+#
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:2222/solid_ehr
+#    username: admin
+#    password: admin
+#    driver-class-name: org.postgresql.Driver
+#
