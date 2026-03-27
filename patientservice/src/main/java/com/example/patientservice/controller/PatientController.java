@@ -24,7 +24,7 @@ public class PatientController {
     public ResponseEntity<ApiResponse<PatientResponseDto>> createPatient(
             @Valid @RequestBody PatientRequestDto dto) {
 
-        log.info("API request: create patient");
+        log.info(" create patient");
 
         return ResponseEntity.ok(patientService.createPatient(dto));
     }
@@ -33,7 +33,7 @@ public class PatientController {
     public ResponseEntity<ApiResponse<PatientResponseDto>> getPatientById(
             @PathVariable Long id) {
 
-        log.info("API request: get patient {}", id);
+        log.info(" get patient {}", id);
 
         return ResponseEntity.ok(patientService.getPatientById(id));
     }
@@ -41,7 +41,7 @@ public class PatientController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<PatientResponseDto>>> getAllPatients() {
 
-        log.info("API request: get all patients");
+        log.info(" get all patients");
 
         return ResponseEntity.ok(patientService.getAllPatients());
     }
@@ -51,7 +51,7 @@ public class PatientController {
             @PathVariable Long id,
             @Valid @RequestBody PatientRequestDto dto) {
 
-        log.info("API request: update patient {}", id);
+        log.info(" update patient {}", id);
 
         return ResponseEntity.ok(patientService.updatePatient(id, dto));
     }
@@ -60,7 +60,7 @@ public class PatientController {
     public ResponseEntity<ApiResponse<Object>> deletePatient(
             @PathVariable Long id) {
 
-        log.info("API request: delete patient {}", id);
+        log.info(" delete patient {}", id);
 
         return ResponseEntity.ok(patientService.deletePatient(id));
     }

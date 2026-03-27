@@ -5,7 +5,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/healthinsurance
     username: postgres
-    password: ${POSTGRES_DB_PASSWORD}
+   # password: ${POSTGRES_DB_PASSWORD}
+    password: bhagyashri@123
     driver-class-name: org.postgresql.Driver
 
   jpa:

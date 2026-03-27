@@ -1,6 +1,5 @@
 package com.example.patientservice.dto;
 
-import com.example.patientservice.enums.AppointmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +12,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AppointmentResponseDto {
+public class EncounterResponseDto {
     private Long id;
-    private UUID appointmentId;
-    private Long patientId;
-    private Long doctorId;
-    private Long clinicId;
-    private LocalDateTime appointmentDate;
-    private String reason;
-    private AppointmentStatus status;
+    private UUID encounterId;
+    private Long appointmentId;
+    private String diagnosis;
+    private String notes;
+    private LocalDateTime encounterDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

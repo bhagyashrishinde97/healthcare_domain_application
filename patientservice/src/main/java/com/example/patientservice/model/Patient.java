@@ -1,15 +1,17 @@
 package com.example.patientservice.model;
-//import com.example.healthcare.enums.Gender;
+
 import com.example.patientservice.dto.AddressResponseDto;
 import com.example.patientservice.dto.PatientResponseDto;
 import com.example.patientservice.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
 @Entity
 @Table(name = "patients")
 @Getter
@@ -21,18 +23,14 @@ public class Patient extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "user_id", nullable = false, unique = true)
     private UUID userId;
-
     @NotNull
     @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
-
     @NotNull
     @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
-
     @NotNull
     @Column(length = 100, nullable = false, unique = true)
     private String email;

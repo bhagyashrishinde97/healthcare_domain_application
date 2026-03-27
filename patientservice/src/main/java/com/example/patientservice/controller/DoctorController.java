@@ -20,20 +20,20 @@ public class DoctorController {
     @PostMapping
     public ResponseEntity<ApiResponse<DoctorResponseDto>> createDoctor(
             @Valid @RequestBody DoctorRequestDto dto) {
-        log.info("API request: create doctor");
+        log.info(" create doctor");
         return ResponseEntity.ok(doctorService.createDoctor(dto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<DoctorResponseDto>> getDoctorById(
             @PathVariable Long id) {
-        log.info("API request: get doctor {}", id);
+        log.info(" get doctor {}", id);
         return ResponseEntity.ok(doctorService.getDoctorById(id));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<DoctorResponseDto>>> getAllDoctors() {
-        log.info("API request: get all doctors");
+        log.info(" get all doctors");
         return ResponseEntity.ok(doctorService.getAllDoctors());
     }
 
@@ -41,7 +41,7 @@ public class DoctorController {
     public ResponseEntity<ApiResponse<DoctorResponseDto>> updateDoctor(
             @PathVariable Long id,
             @Valid @RequestBody DoctorRequestDto dto) {
-        log.info("API request: update doctor {}", id);
+        log.info(" update doctor {}", id);
         return ResponseEntity.ok(doctorService.updateDoctor(id, dto));
     }
 
@@ -50,7 +50,7 @@ public class DoctorController {
             @PathVariable Long id)
 
     {
-        log.info("API request: delete doctor {}", id);
+        log.info(" delete doctor {}", id);
         return ResponseEntity.ok(doctorService.deleteDoctor(id));
     }
 }

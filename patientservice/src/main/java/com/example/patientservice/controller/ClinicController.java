@@ -1,5 +1,4 @@
 package com.example.patientservice.controller;
-
 import com.example.patientservice.dto.ApiResponse;
 import com.example.patientservice.dto.ClinicRequestDto;
 import com.example.patientservice.dto.ClinicResponseDto;
@@ -23,7 +22,7 @@ public class ClinicController {
     public ResponseEntity<ApiResponse<ClinicResponseDto>> createClinic(
             @Valid @RequestBody ClinicRequestDto dto) {
 
-        log.info("API request: create clinic");
+        log.info(" create clinic");
 
         return ResponseEntity.ok(clinicService.createClinic(dto));
     }
@@ -32,7 +31,7 @@ public class ClinicController {
     public ResponseEntity<ApiResponse<ClinicResponseDto>> getClinicById(
             @PathVariable Long id) {
 
-        log.info("API request: get clinic {}", id);
+        log.info(" get clinic {}", id);
 
         return ResponseEntity.ok(clinicService.getClinicById(id));
     }
@@ -40,7 +39,7 @@ public class ClinicController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<ClinicResponseDto>>> getAllClinics() {
 
-        log.info("API request: get all clinics");
+        log.info(" get all clinics");
 
         return ResponseEntity.ok(clinicService.getAllClinics());
     }
@@ -50,7 +49,7 @@ public class ClinicController {
             @PathVariable Long id,
             @Valid @RequestBody ClinicRequestDto dto) {
 
-        log.info("API request: update clinic {}", id);
+        log.info(" update clinic {}", id);
 
         return ResponseEntity.ok(clinicService.updateClinic(id, dto));
     }
@@ -59,7 +58,7 @@ public class ClinicController {
     public ResponseEntity<ApiResponse<Object>> deleteClinic(
             @PathVariable Long id) {
 
-        log.info("API request: delete clinic {}", id);
+        log.info(" delete clinic {}", id);
 
         return ResponseEntity.ok(clinicService.deleteClinic(id));
     }
