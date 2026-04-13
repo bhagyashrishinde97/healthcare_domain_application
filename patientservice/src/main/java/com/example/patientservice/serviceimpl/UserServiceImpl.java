@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
 
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+      //  user.setPassword(dto.getPassword());
         user.setBloodGroup(dto.getBloodGroup());
         user.setIsActive(dto.isActive());
 

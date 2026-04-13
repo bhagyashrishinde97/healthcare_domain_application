@@ -1,6 +1,4 @@
 package com.example.patientservice.model;
-
-
 import com.example.patientservice.dto.AddressResponseDto;
 import com.example.patientservice.dto.PermissionResponseDto;
 import com.example.patientservice.dto.RolesResponseDto;
@@ -23,13 +21,12 @@ import java.util.stream.Collectors;
 @Builder
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(updatable = false, nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "keycloak_user_id", unique = true, nullable = false)
+    private UUID keycloakUserId;
     @Column(nullable = false, unique = true)
     private String userName;
-    @Column(nullable = false)
-    private String password;
     @Column(nullable = false, unique = true)
     private String email;
     @Column(name = "blood_group", length = 5)
@@ -40,14 +37,6 @@ public class User extends BaseEntity {
     private Boolean isActive = true;
     @Embedded
     private Address address;
-    //  @ManyToOne(cascade = CascadeType.ALL)
-//  @JoinColumn(name = "address_id")
-    // private Address address;
-    //  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    //  private Patient patient;
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-//    private Doctor doctor;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",

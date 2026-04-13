@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/appointments")
 @RequiredArgsConstructor
-@Slf4j
 public class AppointmentController {
-
     private final AppointmentService appointmentService;
 
 
