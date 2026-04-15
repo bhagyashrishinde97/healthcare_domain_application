@@ -1,4 +1,4 @@
-package com.example.patientservice.dto;
+package com.example.patientservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

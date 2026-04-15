@@ -1,7 +1,7 @@
 package com.example.patientservice.serviceimpl;
 
-import com.example.patientservice.dto.ApiResponse;
-import com.example.patientservice.dto.RolesResponseDto;
+import com.example.patientservice.dto.response.ApiResponse;
+import com.example.patientservice.dto.response.RolesResponseDto;
 import com.example.patientservice.model.Roles;
 import com.example.patientservice.repository.RolesRepository;
 import com.example.patientservice.service.RolesService;

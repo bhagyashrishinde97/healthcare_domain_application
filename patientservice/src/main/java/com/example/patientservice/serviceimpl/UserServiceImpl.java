@@ -1,7 +1,7 @@
 package com.example.patientservice.serviceimpl;
-import com.example.patientservice.dto.ApiResponse;
-import com.example.patientservice.dto.UserRequestDto;
-import com.example.patientservice.dto.UserResponseDto;
+import com.example.patientservice.dto.response.ApiResponse;
+import com.example.patientservice.dto.request.UserRequestDto;
+import com.example.patientservice.dto.response.UserResponseDto;
 import com.example.patientservice.exception.ResourceNotFoundException;
 import com.example.patientservice.model.Roles;
 import com.example.patientservice.model.User;

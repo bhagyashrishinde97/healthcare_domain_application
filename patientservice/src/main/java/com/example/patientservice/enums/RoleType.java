@@ -1,5 +1,6 @@
 package com.example.patientservice.enums;
-public enum Roles {
+
+public enum RoleType {
     PATIENT,
     DOCTOR,
     ADMIN

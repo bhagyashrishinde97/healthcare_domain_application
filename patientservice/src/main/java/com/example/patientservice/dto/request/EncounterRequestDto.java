@@ -1,11 +1,8 @@
-package com.example.patientservice.dto;
+package com.example.patientservice.dto.request;
 
 import com.example.patientservice.model.Appointment;
 import com.example.patientservice.model.Encounter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EncounterRequestDto {
+
     private Long appointmentId;
     private String diagnosis;
     private String notes;
@@ -21,7 +19,7 @@ public class EncounterRequestDto {
     public Encounter toEntity(Appointment appointment) {
         return Encounter.builder()
                 .appointment(appointment)
-                .dignosis(this.diagnosis)
+                .diagnosis(this.diagnosis)   // FIX: aligned with fixed entity field name
                 .notes(this.notes)
                 .encounterDate(LocalDateTime.now())
                 .build();

@@ -1,14 +1,11 @@
-package com.example.patientservice.dto;
+package com.example.patientservice.dto.request;
 
 import com.example.patientservice.enums.LabStatus;
 import com.example.patientservice.model.Encounter;
 import com.example.patientservice.model.LabOrder;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
@@ -30,11 +27,8 @@ public class LabOrderRequestDto {
 
     public LabOrder toEntity(Encounter encounter) {
         return LabOrder.builder()
-                .testName(this.testName)
-                .testDescription(this.testDescription)
-                .labStatus(this.labStatus)
-                .result(this.result)
-                .encounter(encounter)
-                .build();
+                .testName(this.testName).testDescription(this.testDescription)
+                .labStatus(this.labStatus).result(this.result)
+                .encounter(encounter).build();
     }
 }

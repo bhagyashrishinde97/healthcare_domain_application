@@ -15,100 +15,56 @@ import java.util.Map;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    private ErrorResponse buildError(
-            HttpStatus status,
-            String message,
-            String error,
-            String path,
-            Map<String, String> validationErrors
-    ) {
 
+    private ErrorResponse build(HttpStatus status, String message, String error,
+                                String path, Map<String, String> errors) {
         return ErrorResponse.builder()
-                .success(false)
-                .status(status.value())
-                .error(error)
-                .message(message)
-                .path(path)
-                .timestamp(LocalDateTime.now())
-                .errors(validationErrors)
-                .build();
+                .success(false).status(status.value()).error(error)
+                .message(message).path(path).timestamp(LocalDateTime.now())
+                .errors(errors).build();
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(
-            ResourceNotFoundException ex,
-            HttpServletRequest request) {
-
-        log.error("Resource not found: {}", ex.getMessage());
-
+            ResourceNotFoundException ex, HttpServletRequest req) {
+        log.error("Not found: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(buildError(
-                        HttpStatus.NOT_FOUND,
-                        ex.getMessage(),
-                        "Not Found",
-                        request.getRequestURI(),
-                        null
-                ));
+                .body(build(HttpStatus.NOT_FOUND, ex.getMessage(), "Not Found", req.getRequestURI(), null));
     }
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ErrorResponse> handleValidation(
-            ValidationException ex,
-            HttpServletRequest request) {
-
+            ValidationException ex, HttpServletRequest req) {
         log.error("Validation error: {}", ex.getMessage());
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(buildError(
-                        HttpStatus.BAD_REQUEST,
-                        ex.getMessage(),
-                        "Bad Request",
-                        request.getRequestURI(),
-                        null
-                ));
+                .body(build(HttpStatus.BAD_REQUEST, ex.getMessage(), "Bad Request", req.getRequestURI(), null));
+    }
+
+    // FIX: IllegalArgumentException was unhandled → was returning 500
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(
+            IllegalArgumentException ex, HttpServletRequest req) {
+        log.error("Bad request: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(build(HttpStatus.BAD_REQUEST, ex.getMessage(), "Bad Request", req.getRequestURI(), null));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodValidation(
-            MethodArgumentNotValidException ex,
-            HttpServletRequest request) {
-
+            MethodArgumentNotValidException ex, HttpServletRequest req) {
         Map<String, String> fieldErrors = new HashMap<>();
-
         ex.getBindingResult().getFieldErrors()
-                .forEach(error ->
-                        fieldErrors.put(
-                                error.getField(),
-                                error.getDefaultMessage()
-                        ));
-
+                .forEach(e -> fieldErrors.put(e.getField(), e.getDefaultMessage()));
         log.error("DTO validation failed: {}", fieldErrors);
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(buildError(
-                        HttpStatus.BAD_REQUEST,
-                        "Invalid request body",
-                        "Validation Failed",
-                        request.getRequestURI(),
-                        fieldErrors
-                ));
+                .body(build(HttpStatus.BAD_REQUEST, "Invalid request body", "Validation Failed", req.getRequestURI(), fieldErrors));
     }
 
-
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(
-            Exception ex,
-            HttpServletRequest request) {
-
+    public ResponseEntity<ErrorResponse> handleGlobal(Exception ex, HttpServletRequest req) {
         log.error("Internal server error", ex);
-
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(buildError(
-                        HttpStatus.INTERNAL_SERVER_ERROR,
-                        "Something went wrong",
-                        "Internal Server Error",
-                        request.getRequestURI(),
-                        null
-                ));
+                .body(build(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong",
+                        "Internal Server Error", req.getRequestURI(), null));
     }
 }

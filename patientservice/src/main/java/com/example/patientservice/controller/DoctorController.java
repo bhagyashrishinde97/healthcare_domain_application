@@ -1,8 +1,8 @@
 package com.example.patientservice.controller;
 
-import com.example.patientservice.dto.ApiResponse;
-import com.example.patientservice.dto.DoctorRequestDto;
-import com.example.patientservice.dto.DoctorResponseDto;
+import com.example.patientservice.dto.response.ApiResponse;
+import com.example.patientservice.dto.request.DoctorRequestDto;
+import com.example.patientservice.dto.response.DoctorResponseDto;
 import com.example.patientservice.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

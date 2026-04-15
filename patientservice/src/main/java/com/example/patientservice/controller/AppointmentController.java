@@ -1,8 +1,8 @@
 package com.example.patientservice.controller;
 
-import com.example.patientservice.dto.ApiResponse;
-import com.example.patientservice.dto.AppointmentRequestDto;
-import com.example.patientservice.dto.AppointmentResponseDto;
+import com.example.patientservice.dto.response.ApiResponse;
+import com.example.patientservice.dto.request.AppointmentRequestDto;
+import com.example.patientservice.dto.response.AppointmentResponseDto;
 import com.example.patientservice.service.AppointmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,68 +21,39 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
 
-
     @PostMapping
     public ResponseEntity<ApiResponse<AppointmentResponseDto>> createAppointment(
             @Valid @RequestBody AppointmentRequestDto dto) {
-
         log.info("Creating appointment for patientId={}", dto.getPatientId());
-
-        ApiResponse<AppointmentResponseDto> response =
-                appointmentService.createAppointment(dto);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(appointmentService.createAppointment(dto));
     }
 
     @GetMapping("/{appointmentId}")
     public ResponseEntity<ApiResponse<AppointmentResponseDto>> getAppointmentById(
             @PathVariable UUID appointmentId) {
-
         log.info("Fetching appointment by UUID={}", appointmentId);
-
-        ApiResponse<AppointmentResponseDto> response =
-                appointmentService.getAppointmentById(appointmentId);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(appointmentService.getAppointmentById(appointmentId));
     }
-
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<AppointmentResponseDto>>> getAllAppointments() {
-
         log.info("Fetching all appointments");
-
-        ApiResponse<List<AppointmentResponseDto>> response =
-                appointmentService.getAllAppointments();
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(appointmentService.getAllAppointments());
     }
 
-
-    @PutMapping("." +
-            "2{id}")
+    // FIX: was @PutMapping("." + "2{id}") — completely broken URL
+    @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<AppointmentResponseDto>> updateAppointment(
             @PathVariable Long id,
             @Valid @RequestBody AppointmentRequestDto dto) {
-
-        log.info("Updating appointment with DB id={}", id);
-
-        ApiResponse<AppointmentResponseDto> response =
-                appointmentService.updateAppointment(id, dto);
-
-        return ResponseEntity.ok(response);
+        log.info("Updating appointment id={}", id);
+        return ResponseEntity.ok(appointmentService.updateAppointment(id, dto));
     }
-
 
     @DeleteMapping("/internal/{id}")
     public ResponseEntity<ApiResponse<Object>> deleteAppointment(
             @PathVariable Long id) {
-
-        log.info("Deleting appointment with DB id={}", id);
-
-        ApiResponse<Object> response =
-                appointmentService.deleteAppointment(id);
-
-        return ResponseEntity.ok(response);
+        log.info("Deleting appointment id={}", id);
+        return ResponseEntity.ok(appointmentService.deleteAppointment(id));
     }
 }

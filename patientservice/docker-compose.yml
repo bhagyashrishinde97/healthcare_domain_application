@@ -1,10 +1,9 @@
 version: "3.8"
 
 services:
-
   postgres:
-    image: postgres:15
-    container_name: patient-postgres
+    image: postgres:15.5
+    container_name: postgres-db
     restart: always
     environment:
       POSTGRES_DB: healthinsurance
@@ -14,33 +13,21 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - patient-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
-  patient-service:
-    build: .
-    container_name: patient-service
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.0
+    container_name: keycloak-server
+    command: start-dev
     restart: always
-    ports:
-      - "8081:8081"
-    depends_on:
-      postgres:
-        condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/healthinsurance
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_DB_PASSWORD}
-    networks:
-      - patient-network
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_ENABLED: "true"
+      KC_HTTP_PORT: 8080
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_STRICT: "false"
+    ports:
+      - "8080:8080"
 
 volumes:
   postgres_data:
-
-networks:
-  patient-network:
-    driver: bridge

@@ -9,40 +9,25 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class RoleDataLoader implements CommandLineRunner {
+
     private final RolesRepository rolesRepository;
+
     @Override
-    public void run(String... args) throws Exception {
-        if(rolesRepository.findByRoleName("PATIENT").isEmpty()){
+    public void run(String... args) {
+        createRoleIfAbsent("PATIENT", "Patient Role");
+        createRoleIfAbsent("DOCTOR",  "Doctor Role");
+        createRoleIfAbsent("ADMIN",   "Admin Role");
+    }
+
+    private void createRoleIfAbsent(String name, String desc) {
+        if (rolesRepository.findByRoleName(name).isEmpty()) {
             rolesRepository.save(
                     Roles.builder()
-                            .roleName("PATIENT")
-                            .description("Patient Role")
+                            .roleName(name)
+                            .description(desc)
                             .isActive(true)
                             .build()
             );
         }
-
-        if(rolesRepository.findByRoleName("DOCTOR").isEmpty()){
-            rolesRepository.save(
-                    Roles.builder()
-                            .roleName("DOCTOR")
-                            .description("Doctor Role")
-                            .isActive(true)
-                            .build()
-            );
-        }
-
-        if(rolesRepository.findByRoleName("ADMIN").isEmpty()){
-            rolesRepository.save(
-                    Roles.builder()
-                            .roleName("ADMIN")
-                            .description("Admin Role")
-                            .isActive(true)
-                            .build()
-            );
-        }
-
     }
 }
-
-

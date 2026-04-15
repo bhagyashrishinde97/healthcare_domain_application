@@ -1,8 +1,8 @@
 package com.example.patientservice.serviceimpl;
 
-import com.example.patientservice.dto.ApiResponse;
-import com.example.patientservice.dto.AppointmentRequestDto;
-import com.example.patientservice.dto.AppointmentResponseDto;
+import com.example.patientservice.dto.response.ApiResponse;
+import com.example.patientservice.dto.request.AppointmentRequestDto;
+import com.example.patientservice.dto.response.AppointmentResponseDto;
 import com.example.patientservice.exception.ResourceNotFoundException;
 import com.example.patientservice.model.Appointment;
 import com.example.patientservice.model.Clinic;

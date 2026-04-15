@@ -1,14 +1,8 @@
-package com.example.patientservice.dto;
+package com.example.patientservice.dto.request;
 
 import com.example.patientservice.enums.AppointmentStatus;
-import com.example.patientservice.model.Appointment;
-import com.example.patientservice.model.Clinic;
-import com.example.patientservice.model.Doctor;
-import com.example.patientservice.model.Patient;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.patientservice.model.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class AppointmentRequestDto {
+
     private Long patientId;
     private Long doctorId;
     private Long clinicId;
@@ -26,13 +21,9 @@ public class AppointmentRequestDto {
 
     public Appointment toEntity(Patient patient, Doctor doctor, Clinic clinic) {
         return Appointment.builder()
-                .patient(patient)
-                .doctor(doctor)
-                .clinic(clinic)
+                .patient(patient).doctor(doctor).clinic(clinic)
                 .appointmentDate(this.appointmentDate)
-                .reason(this.reason)
-                .status(this.status)
+                .reason(this.reason).status(this.status)
                 .build();
     }
 }
-

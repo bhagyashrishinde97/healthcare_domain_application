@@ -1,8 +1,8 @@
 package com.example.patientservice.service;
 
-import com.example.patientservice.dto.ApiResponse;
-import com.example.patientservice.dto.PatientRequestDto;
-import com.example.patientservice.dto.PatientResponseDto;
+import com.example.patientservice.dto.response.ApiResponse;
+import com.example.patientservice.dto.request.PatientRequestDto;
+import com.example.patientservice.dto.response.PatientResponseDto;
 
 import java.util.List;
 

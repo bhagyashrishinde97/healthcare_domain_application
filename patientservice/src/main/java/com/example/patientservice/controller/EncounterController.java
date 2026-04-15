@@ -1,7 +1,7 @@
 package com.example.patientservice.controller;
 
-import com.example.patientservice.dto.EncounterRequestDto;
-import com.example.patientservice.dto.EncounterResponseDto;
+import com.example.patientservice.dto.request.EncounterRequestDto;
+import com.example.patientservice.dto.response.EncounterResponseDto;
 import com.example.patientservice.service.EncounterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 package com.example.patientservice.service;
 
-import com.example.patientservice.dto.ApiResponse;
-import com.example.patientservice.dto.RolesResponseDto;
+import com.example.patientservice.dto.response.ApiResponse;
+import com.example.patientservice.dto.response.RolesResponseDto;
 
 import java.util.List;
 

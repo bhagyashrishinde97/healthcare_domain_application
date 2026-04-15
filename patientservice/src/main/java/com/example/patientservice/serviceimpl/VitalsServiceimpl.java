@@ -1,7 +1,7 @@
 package com.example.patientservice.serviceimpl;
 
-import com.example.patientservice.dto.VitalsRequestDto;
-import com.example.patientservice.dto.VitalsResponseDto;
+import com.example.patientservice.dto.request.VitalsRequestDto;
+import com.example.patientservice.dto.response.VitalsResponseDto;
 import com.example.patientservice.exception.ResourceNotFoundException;
 import com.example.patientservice.model.Encounter;
 import com.example.patientservice.model.Vitals;

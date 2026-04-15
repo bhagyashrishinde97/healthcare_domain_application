@@ -1,11 +1,8 @@
-package com.example.patientservice.dto;
+package com.example.patientservice.dto.request;
 
 import com.example.patientservice.model.Encounter;
 import com.example.patientservice.model.Prescription;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -21,12 +18,9 @@ public class PrescriptionRequestDto {
 
     public Prescription toEntity(Encounter encounter) {
         return Prescription.builder()
-                .medicineName(this.medicineName)
-                .dosage(this.dosage)
-                .frequency(this.frequency)
-                .duration(this.duration)
-                .instructions(this.instructions)
-                .encounter(encounter)
+                .medicineName(this.medicineName).dosage(this.dosage)
+                .frequency(this.frequency).duration(this.duration)
+                .instructions(this.instructions).encounter(encounter)
                 .build();
     }
 }

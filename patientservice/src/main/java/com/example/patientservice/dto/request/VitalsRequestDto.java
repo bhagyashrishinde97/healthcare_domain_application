@@ -1,17 +1,15 @@
-package com.example.patientservice.dto;
+package com.example.patientservice.dto.request;
 
 import com.example.patientservice.model.Encounter;
 import com.example.patientservice.model.Vitals;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class VitalsRequestDto {
+
     private Double height;
     private Double weight;
     private Double temperature;
@@ -20,12 +18,9 @@ public class VitalsRequestDto {
 
     public Vitals toEntity(Encounter encounter) {
         return Vitals.builder()
-                .height(this.height)
-                .weight(this.weight)
-                .bloodPressure(this.bloodPressure)
-                .temperature(this.temperature)
-                .pulseRate(this.pulseRate)
-                .encounter(encounter)
+                .height(this.height).weight(this.weight)
+                .temperature(this.temperature).pulseRate(this.pulseRate)
+                .bloodPressure(this.bloodPressure).encounter(encounter)
                 .build();
     }
 }

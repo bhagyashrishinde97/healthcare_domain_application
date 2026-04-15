@@ -1,4 +1,4 @@
-package com.example.patientservice.dto;
+package com.example.patientservice.dto.response;
 
 import com.example.patientservice.enums.LabStatus;
 import lombok.AllArgsConstructor;

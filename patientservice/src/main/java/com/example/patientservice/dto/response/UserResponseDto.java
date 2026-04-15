@@ -1,7 +1,5 @@
-package com.example.patientservice.dto;
+package com.example.patientservice.dto.response;
 
-import com.example.patientservice.dto.AddressResponseDto;
-import com.example.patientservice.dto.RolesResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,12 +1,14 @@
+server:
+  port: 8082
+
 spring:
   application:
     name: patientservice
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/healthinsurance
+    url: jdbc:postgresql://localhost:5433/healthinsurance
     username: postgres
-   # password: ${POSTGRES_DB_PASSWORD}
-    password: bhagyashri@123
+    password: ${POSTGRES_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -18,12 +20,15 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-server:
-  port: 8081
-  keycloak:
-  #  realm: master
-  #  tenant-realm: tenant-group
-  #  base-url: http://localhost:3333
-  #  auth-url: ${KEYCLOCK_BASE_URL}/
-  #  client-id: user-service
-  #  client-secret: ${KEYCLOCK_CLIENT_SECRETE}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/healthcare-realm
+
+keycloak:
+  base-url: http://localhost:8080
+  realm: healthcare-realm
+  admin-username: admin
+  admin-password: admin
+  client-id: patient-service
