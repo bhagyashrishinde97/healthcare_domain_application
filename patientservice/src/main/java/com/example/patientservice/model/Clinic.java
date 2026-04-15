@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class Clinic extends BaseEntity {
 
     @Id
@@ -49,20 +50,4 @@ public class Clinic extends BaseEntity {
     @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<>();
 
-    public ClinicResponseDto toDto() {
-        AddressResponseDto addressDto = null;
-        if (this.address != null) {
-            addressDto = AddressResponseDto.builder()
-                    .street(address.getStreet()).city(address.getCity())
-                    .state(address.getState()).country(address.getCountry())
-                    .zipCode(address.getZipCode()).build();
-        }
-        return ClinicResponseDto.builder()
-                .id(this.id).userId(this.userId)
-                .clinicName(this.clinicName).location(this.location)
-                .contactEmail(this.contactEmail).isActive(this.isActive)
-                .address(addressDto)
-                .createdAt(this.getCreatedAt()).updatedAt(this.getUpdatedAt())
-                .build();
-    }
 }

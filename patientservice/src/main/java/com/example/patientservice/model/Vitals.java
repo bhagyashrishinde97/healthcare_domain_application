@@ -3,6 +3,7 @@ package com.example.patientservice.model;
 import com.example.patientservice.dto.response.VitalsResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "vitals")
@@ -27,13 +28,4 @@ public class Vitals {
 
     @Column(length = 20)
     private String bloodPressure;
-
-    public VitalsResponseDto toDto() {
-        return VitalsResponseDto.builder()
-                .id(this.id).height(this.height).weight(this.weight)
-                .pulseRate(this.pulseRate).temperature(this.temperature)
-                .bloodPressure(this.bloodPressure)
-                .encounterId(encounter != null ? encounter.getId() : null)
-                .build();
-    }
 }

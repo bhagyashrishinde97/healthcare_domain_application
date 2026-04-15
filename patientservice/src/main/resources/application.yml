@@ -6,9 +6,9 @@ spring:
     name: patientservice
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/healthinsurance
+    url: jdbc:postgresql://localhost:5432/healthinsurance
     username: postgres
-    password: ${POSTGRES_DB_PASSWORD}
+    password: root123
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -26,9 +26,6 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/healthcare-realm
 
-keycloak:
-  base-url: http://localhost:8080
-  realm: healthcare-realm
-  admin-username: admin
-  admin-password: admin
-  client-id: patient-service
+
+
+#client secret : AAHrLPSJXVNPFbM8MaV5njWluEQoVBaw

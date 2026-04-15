@@ -5,6 +5,7 @@ import com.example.patientservice.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class Appointment extends BaseEntity {
 
     @Id
@@ -54,15 +55,4 @@ public class Appointment extends BaseEntity {
         }
     }
 
-    public AppointmentResponseDto toDto() {
-        return AppointmentResponseDto.builder()
-                .id(this.id).appointmentId(this.appointmentId)
-                .patientId(this.patient.getId())
-                .doctorId(this.doctor.getId())
-                .clinicId(this.clinic.getId())
-                .appointmentDate(this.appointmentDate)
-                .reason(this.reason).status(this.status)
-                .createdAt(this.getCreatedAt()).updatedAt(this.getUpdatedAt())
-                .build();
-    }
 }

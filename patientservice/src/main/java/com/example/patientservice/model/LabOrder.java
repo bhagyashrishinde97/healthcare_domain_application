@@ -4,13 +4,14 @@ import com.example.patientservice.dto.response.LabOrderResponseDto;
 import com.example.patientservice.enums.LabStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "lab_orders")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class LabOrder extends BaseEntity {
 
     @Id
@@ -34,12 +35,5 @@ public class LabOrder extends BaseEntity {
     @Column(nullable = false, length = 1000)
     private String result;
 
-    public LabOrderResponseDto toDto() {
-        return LabOrderResponseDto.builder()
-                .id(this.id).testName(this.testName)
-                .testDescription(this.testDescription)
-                .labStatus(this.labStatus).result(this.result)
-                .encounterId(this.encounter.getId())
-                .build();
-    }
+
 }

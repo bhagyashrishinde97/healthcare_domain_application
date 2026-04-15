@@ -3,13 +3,14 @@ package com.example.patientservice.model;
 import com.example.patientservice.dto.response.PrescriptionResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "prescriptions")
 @Data
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Prescription extends BaseEntity {
 
     @Id
@@ -34,12 +35,5 @@ public class Prescription extends BaseEntity {
     @Column(length = 500)
     private String instructions;
 
-    public PrescriptionResponseDto toDto() {
-        return PrescriptionResponseDto.builder()
-                .id(this.id).medicineName(this.medicineName)
-                .dosage(this.dosage).frequency(this.frequency)
-                .duration(this.duration).instructions(this.instructions)
-                .encounterId(encounter != null ? encounter.getId() : null)
-                .build();
-    }
+
 }

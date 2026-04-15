@@ -7,7 +7,9 @@ import com.example.patientservice.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,48 +22,45 @@ public class PatientController {
 
     private final PatientService patientService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<PatientResponseDto>> createPatient(
+    @PostMapping("/me")
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<ApiResponse<PatientResponseDto>> saveMyProfile(
             @Valid @RequestBody PatientRequestDto dto) {
+        log.info("API: Creating/updating patient profile");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(patientService.createOrUpdateMyProfile(dto));
+    }
 
-        log.info(" create patient");
-
-        return ResponseEntity.ok(patientService.createPatient(dto));
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<ApiResponse<PatientResponseDto>> getMyProfile() {
+        log.info("API: Fetching my patient profile");
+        return ResponseEntity.ok(patientService.getMyProfile());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<PatientResponseDto>> getPatientById(
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
+    public ResponseEntity<ApiResponse<PatientResponseDto>> getById(
             @PathVariable Long id) {
-
-        log.info(" get patient {}", id);
-
+        log.info("API: Fetching patient by id={}", id);
         return ResponseEntity.ok(patientService.getPatientById(id));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PatientResponseDto>>> getAllPatients() {
-
-        log.info(" get all patients");
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
+    public ResponseEntity<ApiResponse<List<PatientResponseDto>>> getAll() {
+        log.info("API: Fetching all patients");
         return ResponseEntity.ok(patientService.getAllPatients());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<PatientResponseDto>> updatePatient(
-            @PathVariable Long id,
-            @Valid @RequestBody PatientRequestDto dto) {
-
-        log.info(" update patient {}", id);
-
-        return ResponseEntity.ok(patientService.updatePatient(id, dto));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Object>> deletePatient(
-            @PathVariable Long id) {
-
-        log.info(" delete patient {}", id);
-
-        return ResponseEntity.ok(patientService.deletePatient(id));
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
+    public ResponseEntity<ApiResponse<List<PatientResponseDto>>> searchPatients(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String email) {
+        log.info("API: Searching patients with firstName={}, lastName={}, email={}",
+                firstName, lastName, email);
+        return ResponseEntity.ok(patientService.searchPatients(firstName, lastName, email));
     }
 }

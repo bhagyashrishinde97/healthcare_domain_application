@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,6 +24,18 @@ public class GlobalExceptionHandler {
                 .message(message).path(path).timestamp(LocalDateTime.now())
                 .errors(errors).build();
     }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(
+            AccessDeniedException ex, HttpServletRequest req) {
+        log.warn("Access denied: {}", req.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(build(HttpStatus.FORBIDDEN,
+                        "You do not have permission to access this resource",
+                        "Forbidden", req.getRequestURI(), null));
+    }
+
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(

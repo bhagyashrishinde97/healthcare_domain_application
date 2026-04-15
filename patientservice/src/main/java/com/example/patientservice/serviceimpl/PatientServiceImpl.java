@@ -4,113 +4,111 @@ import com.example.patientservice.dto.response.ApiResponse;
 import com.example.patientservice.dto.request.PatientRequestDto;
 import com.example.patientservice.dto.response.PatientResponseDto;
 import com.example.patientservice.exception.ResourceNotFoundException;
+import com.example.patientservice.mapper.PatientMapper;
 import com.example.patientservice.model.Patient;
 import com.example.patientservice.repository.PatientRepository;
 import com.example.patientservice.service.PatientService;
+import com.example.patientservice.utility.JwtHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final PatientMapper patientMapper;
 
     @Override
-    public ApiResponse<PatientResponseDto> createPatient(PatientRequestDto dto) {
+    public ApiResponse<PatientResponseDto> createOrUpdateMyProfile(PatientRequestDto dto) {
+        UUID userId = JwtHelper.getCurrentUserId();
+        log.info("Service: Creating/updating patient profile for userId={}", userId);
 
-        log.info("Creating patient");
-
-        Patient patient = dto.toEntity();
-
-        Patient savedPatient = patientRepository.save(patient);
-
-        log.info("Patient created with id {}", savedPatient.getId());
-
-        return ApiResponse.success(
-                "Patient created successfully",
-                savedPatient.toDto()
-        );
-    }
-
-    @Override
-    public ApiResponse<PatientResponseDto> getPatientById(Long id) {
-
-        log.info("Fetching patient {}", id);
-
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Patient not found {}", id);
-                    return new ResourceNotFoundException("Patient not found with id " + id);
+        Patient patient = patientRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    Patient newPatient = patientMapper.toEntity(dto);
+                    newPatient.setUserId(userId);
+                    log.info("Creating new patient profile");
+                    return newPatient;
                 });
 
-        return ApiResponse.success(
-                "Patient fetched successfully",
-                patient.toDto()
-        );
+        if (patient.getId() != null) {
+            log.info("Updating existing patient profile id={}", patient.getId());
+            patientMapper.updateEntity(dto, patient);
+        }
+
+        Patient saved = patientRepository.save(patient);
+
+        log.info("Service: Patient profile saved successfully");
+        return ApiResponse.success("Patient profile saved successfully", patientMapper.toDto(saved));
     }
 
     @Override
-    public ApiResponse<List<PatientResponseDto>> getAllPatients() {
+    @Transactional(readOnly = true)
+    public ApiResponse<PatientResponseDto> getMyProfile() {
+        UUID userId = JwtHelper.getCurrentUserId();
+        log.info("Service: Fetching patient profile for userId={}", userId);
 
-        log.info("Fetching all patients");
+        Patient patient = patientRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient profile not found. Please create one first."));
+
+        return ApiResponse.success("Patient profile fetched successfully", patientMapper.toDto(patient));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ApiResponse<PatientResponseDto> getPatientById(Long id) {
+        log.info("Service: Fetching patient by id={}", id);
+
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + id));
+
+        return ApiResponse.success("Patient fetched successfully", patientMapper.toDto(patient));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ApiResponse<List<PatientResponseDto>> getAllPatients() {
+        log.info("Service: Fetching all patients");
 
         List<PatientResponseDto> patients = patientRepository.findAll()
                 .stream()
-                .map(Patient::toDto)
+                .map(patientMapper::toDto)
                 .toList();
 
-        return ApiResponse.success(
-                "All patients fetched successfully",
-                patients
-        );
+        return ApiResponse.success("Patients fetched successfully", patients);
     }
 
     @Override
-    public ApiResponse<PatientResponseDto> updatePatient(Long id, PatientRequestDto dto) {
+    @Transactional(readOnly = true)
+    public ApiResponse<List<PatientResponseDto>> searchPatients(String firstName, String lastName, String email) {
+        log.info("Service: Searching patients - firstName={}, lastName={}, email={}", firstName, lastName, email);
 
-        log.info("Updating patient {}", id);
+        List<Patient> patients;
 
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
+        if (email != null && !email.isBlank()) {
+            patients = patientRepository.findByEmailContainingIgnoreCase(email);
+        } else if (firstName != null && !firstName.isBlank() && lastName != null && !lastName.isBlank()) {
+            patients = patientRepository.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
+        } else if (firstName != null && !firstName.isBlank()) {
+            patients = patientRepository.findByFirstNameContainingIgnoreCase(firstName);
+        } else if (lastName != null && !lastName.isBlank()) {
+            patients = patientRepository.findByLastNameContainingIgnoreCase(lastName);
+        } else {
+            patients = patientRepository.findAll();
+        }
 
-        patient.setFirstName(dto.getFirstName());
-        patient.setLastName(dto.getLastName());
-        patient.setEmail(dto.getEmail());
-        patient.setDob(dto.getDob());
-        patient.setBloodGroup(dto.getBloodGroup());
-        patient.setContactNumber(dto.getContactNumber());
+        List<PatientResponseDto> result = patients.stream()
+                .map(patientMapper::toDto)
+                .toList();
 
-        Patient updatedPatient = patientRepository.save(patient);
-
-        log.info("Patient updated {}", id);
-
-        return ApiResponse.success(
-                "Patient updated successfully",
-                updatedPatient.toDto()
-        );
-    }
-
-    @Override
-    public ApiResponse<Object> deletePatient(Long id) {
-
-        log.info("Deleting patient {}", id);
-
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Patient not found for delete {}", id);
-                    return new ResourceNotFoundException("Patient not found");
-                });
-
-        patientRepository.delete(patient);
-
-        return ApiResponse.success(
-                "Patient deleted successfully",
-                null
-        );
+        return ApiResponse.success("Patient search completed successfully", result);
     }
 }

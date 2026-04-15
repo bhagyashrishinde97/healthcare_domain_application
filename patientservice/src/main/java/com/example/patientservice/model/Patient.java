@@ -6,6 +6,7 @@ import com.example.patientservice.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class Patient extends BaseEntity {
 
     @Id
@@ -61,22 +62,5 @@ public class Patient extends BaseEntity {
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<>();
 
-    public PatientResponseDto toDto() {
-        AddressResponseDto addressDto = null;
-        if (this.address != null) {
-            addressDto = AddressResponseDto.builder()
-                    .street(address.getStreet()).city(address.getCity())
-                    .state(address.getState()).country(address.getCountry())
-                    .zipCode(address.getZipCode()).build();
-        }
-        return PatientResponseDto.builder()
-                .id(this.id).userId(this.userId)
-                .firstName(this.firstName).lastName(this.lastName)
-                .email(this.email).dob(this.dob)
-                .gender(this.gender != null ? this.gender.name() : null)
-                .bloodGroup(this.bloodGroup).contactNumber(this.contactNumber)
-                .address(addressDto)
-                .createdAt(this.getCreatedAt()).updatedAt(this.getUpdatedAt())
-                .build();
-    }
+
 }

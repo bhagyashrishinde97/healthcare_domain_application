@@ -7,13 +7,14 @@ import com.example.patientservice.dto.response.PatientResponseDto;
 import java.util.List;
 
 public interface PatientService {
-    ApiResponse<PatientResponseDto> createPatient(PatientRequestDto dto);
+
+    ApiResponse<PatientResponseDto> createOrUpdateMyProfile(PatientRequestDto dto);
+
+    ApiResponse<PatientResponseDto> getMyProfile();
 
     ApiResponse<PatientResponseDto> getPatientById(Long id);
 
     ApiResponse<List<PatientResponseDto>> getAllPatients();
 
-    ApiResponse<PatientResponseDto> updatePatient(Long id, PatientRequestDto dto);
-
-    ApiResponse<Object> deletePatient(Long id);
+    ApiResponse<List<PatientResponseDto>> searchPatients(String firstName, String lastName, String email);
 }

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class Doctor extends BaseEntity {
 
     @Id
@@ -60,21 +61,5 @@ public class Doctor extends BaseEntity {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<>();
 
-    public DoctorResponseDto toDto() {
-        AddressResponseDto addressDto = null;
-        if (this.address != null) {
-            addressDto = AddressResponseDto.builder()
-                    .street(address.getStreet()).city(address.getCity())
-                    .state(address.getState()).country(address.getCountry())
-                    .zipCode(address.getZipCode()).build();
-        }
-        return DoctorResponseDto.builder()
-                .id(this.id).userId(this.userId)
-                .firstName(this.firstName).lastName(this.lastName)
-                .specialization(this.specialization).licenseNumber(this.licenseNumber)
-                .department(this.department).availabilityStatus(this.availabilityStatus)
-                .contactNumber(this.contactNumber).address(addressDto)
-                .createdAt(this.getCreatedAt()).updatedAt(this.getUpdatedAt())
-                .build();
-    }
+
 }

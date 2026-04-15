@@ -3,6 +3,7 @@ package com.example.patientservice.model;
 import com.example.patientservice.dto.response.EncounterResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class Encounter extends BaseEntity {
 
     @Id
@@ -52,13 +53,5 @@ public class Encounter extends BaseEntity {
         }
     }
 
-    public EncounterResponseDto toDto() {
-        return EncounterResponseDto.builder()
-                .id(this.id).encounterId(this.encounterId)
-                .appointmentId(this.appointment.getId())
-                .diagnosis(this.diagnosis)
-                .notes(this.notes).encounterDate(this.encounterDate)
-                .createdAt(this.getCreatedAt()).updatedAt(this.getUpdatedAt())
-                .build();
-    }
+
 }
